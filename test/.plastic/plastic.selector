@@ -1,0 +1,4 @@
+repository "test@dokunyu@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"

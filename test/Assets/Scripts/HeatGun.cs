@@ -9,22 +9,31 @@ public class HeatGun : MonoBehaviour
     public Image HeatMax;
     //heat
     public float CurrHot,MaxHot;
-    public float CoolingSpeed=0.025f;
+    public float CoolingSpeed=0.03f;
     public int ShootFlag;
     //blood change
-    Robot standard;
-    public float TotalBlood; 
+    public float BloodChange = 0;
+    public float TotalBlood = 0;
+    private float _alpha = 0;
     //time 
     private float _totalTime=0;
+    //flag
+    private bool isPause = false;
     
     void Start()
     {
         CurrHot = 0;
         MaxHot = 50;
+        HeatMax.fillAmount = 1;
+
     }
     void Update()
     {
-        
+        if (!isPause)
+        {
+            TotalBlood = GetComponent<StandardCheckAttack>().TotalBlood;
+        }
+        BloodChange = 0;
         _totalTime += Time.deltaTime;
         if (_totalTime > 0.1)
         {
@@ -34,7 +43,7 @@ public class HeatGun : MonoBehaviour
             }
             if (CurrHot >= MaxHot && CurrHot<2*MaxHot)
             {
-                standard.ChangeBlood((CurrHot-MaxHot)/250/10*TotalBlood);
+                BloodChange=((CurrHot-MaxHot)/250/10*TotalBlood);
             }
             _totalTime = 0;
         }
@@ -45,13 +54,21 @@ public class HeatGun : MonoBehaviour
         }
         if (CurrHot >= MaxHot)
         {
-            HeatMax.fillAmount = 1;
+            _alpha = (CurrHot-MaxHot)/MaxHot;
+            HeatMax.color = new Color(HeatMax.color.r, HeatMax.color.g, HeatMax.color.b, _alpha);
             Heat.color=Color.red;
         }
         if (CurrHot < MaxHot)
         {
-            HeatMax.fillAmount = 0;
+            _alpha = 0;
+            HeatMax.color = new Color(HeatMax.color.r, HeatMax.color.g, HeatMax.color.b, _alpha);
             Heat.color=Color.white;
+        }
+
+        if (CurrHot > 2 * MaxHot)
+        {
+            BloodChange = (CurrHot - 2 * MaxHot) / 250 * TotalBlood;
+            CurrHot = 2 * MaxHot;
         }
         
         ImageChange();

@@ -37,6 +37,8 @@ public class CarMove : MonoBehaviour
     //get z speed
     public GameObject Platform;
     public PlatformMove PlatformMove;
+    //fail tag
+    public bool EndTag = false;
     void Start()
     {
         //set mecanum wheel angle
@@ -54,6 +56,7 @@ public class CarMove : MonoBehaviour
     {
         //get component
         PlatformMove = Platform.GetComponent<PlatformMove>();
+        EndTag = GetComponent<StandardCheckAttack>().FailTagStandard;
         //set initial value
         LeftF.motorTorque = 0;
         LeftB.motorTorque = 0;
@@ -69,14 +72,18 @@ public class CarMove : MonoBehaviour
         M = PlatformMove.AngleDifference;
         float xSpeed = H * HorizontalMoveSpeed;
         float ySpeed = V * VerticalSpeed ;
-        Mecanum(xSpeed, ySpeed, M);
+        if (EndTag == false)
+        {
+            Mecanum(xSpeed, ySpeed, M);
+        }
+        
         //
         /*
         WheelModelUpdate(model_leftF, Pwm1);
         WheelModelUpdate(model_leftB, Pwm2);
         WheelModelUpdate(model_rightF, Pwm3);
         WheelModelUpdate(model_rightB, Pwm4);*/
-        ShowMouse();
+        
 
     }
     void Mecanum(float xSpeed,float ySpeed,float aSpeed)
@@ -150,15 +157,5 @@ public class CarMove : MonoBehaviour
         //t.rotation = rot;
         //t.transform.Rotate(Vector3.forward, pwm);
     }*/
-    void ShowMouse()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-    }
+    
 }

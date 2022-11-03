@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1107493653686179578}
   - component: {fileID: 1371900972358414713}
   - component: {fileID: 3402801827578045798}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,9 +92,9 @@ GameObject:
   - component: {fileID: 9160070720178628599}
   - component: {fileID: 108542080725169811}
   - component: {fileID: 4233045601766296016}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallBullet
-  m_TagString: Untagged
+  m_TagString: bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

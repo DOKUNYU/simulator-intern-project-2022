@@ -7,37 +7,54 @@ using UnityEngine.UI;
 
 public class BaseCheckAttack : MonoBehaviour
 {
+    //flag
     public int CountAttack = 0;
     public float BaseBlood,TotalBlood;
-    Base BlueBase = new Base();
+    public Base BlueBase = new Base();
     public Image healthPoint;
     public GameObject SentryRed;
-    private bool _endTagSentry = false;
+    public bool EndTagSentry = false;
+    public bool FailTagBase = false;
     void Start()
     {
-        
         BlueBase.Blood = 2000;
-        BaseBlood = BlueBase.BaseBlood;
-        TotalBlood = BaseBlood;
-        healthPoint.color=Color.blue;
-        _endTagSentry = SentryRed.GetComponent<SentryCheckAttack>().FailTagSentry;
+        Initial();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        _endTagSentry = SentryRed.GetComponent<SentryCheckAttack>().FailTagSentry;
-        if (_endTagSentry == true)
+        
+        EndTagSentry = SentryRed.GetComponent<SentryCheckAttack>().FailTagSentry;
+        if (EndTagSentry == true && FailTagBase==false)
         {
             healthPoint.color=Color.white;
             BaseBlood = BlueBase.BaseBlood;
-            BloodChange();
+            Debug.Log(BaseBlood);
+            if (BaseBlood == 0)
+            {
+                FailTagBase = true;
+            }
+            else
+            {
+                BloodChange();
+            }
+            
         }
     }
 
+    public void Initial()
+    {
+        BaseBlood = BlueBase.BaseBlood;
+        TotalBlood = BaseBlood;
+        BloodChange();
+        healthPoint.color=Color.blue;
+        EndTagSentry = SentryRed.GetComponent<SentryCheckAttack>().FailTagSentry;
+    }
     void OnCollisionEnter(Collision collision)
     {
-        if (_endTagSentry == true)
+        if (EndTagSentry == true && FailTagBase== false)
         {
             CountAttack += 1;
             BlueBase.ChangeBlood();
@@ -47,4 +64,5 @@ public class BaseCheckAttack : MonoBehaviour
     {
         healthPoint.fillAmount = BaseBlood / TotalBlood;
     }
+    
 }

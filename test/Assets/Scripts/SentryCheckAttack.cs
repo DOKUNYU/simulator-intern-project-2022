@@ -9,7 +9,7 @@ public class SentryCheckAttack : MonoBehaviour
     public int CountAttack = 0;
     public float SentryBlood,TotalBlood;
     public  bool FailTagSentry=false;
-    Robot myRobot1 = new Robot();
+    public Robot myRobot1 = new Robot();
     
     public Image healthPoint1;
     void Start()

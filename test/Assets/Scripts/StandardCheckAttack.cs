@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class StandardCheckAttack : MonoBehaviour
 {
     public int CountAttack = 0;
-    public float StandardBlood,TotalBlood;
+    public float StandardBlood,TotalBlood,BloodChange;
+    public  bool FailTagStandard=false;
     public Robot myRobot = new Robot();
     
     public Image healthPoint;
@@ -22,18 +23,32 @@ public class StandardCheckAttack : MonoBehaviour
     void Update()
     {
         StandardBlood = myRobot.RobotBlood;
+        BloodChange = GetComponent<HeatGun>().BloodChange;
+        if (BloodChange != 0)
+        {
+            myRobot.ChangeBlood(BloodChange);
+        }
         ImageChange();
+        if (StandardBlood == 0)
+        {
+            FailTagStandard = true;
+        }
         //print(BaseBlood);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        CountAttack += 1;
-        myRobot.ChangeBlood(100);
+        if (collision.collider.CompareTag("bullet"))
+        {
+            CountAttack += 1;
+            myRobot.ChangeBlood(100);
+        }
+        
 
     }
     void ImageChange()
     {
         healthPoint.fillAmount = StandardBlood / TotalBlood;
     }
+    
 }
